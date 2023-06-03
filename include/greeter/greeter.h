@@ -2,18 +2,26 @@
 
 #include <string>
 
-namespace greeter {
+namespace greeter
+{
 
-  /**  Language codes to be used with the Greeter class */
-  enum class LanguageCode { EN, DE, ES, FR };
+/**  Language codes to be used with the Greeter class */
+enum class LanguageCode
+{
+    EN,
+    DE,
+    ES,
+    FR
+};
 
-  /**
-   * @brief A class for saying hello in multiple languages
-   */
-  class Greeter {
+/**
+ * @brief A class for saying hello in multiple languages
+ */
+class Greeter
+{
     std::string name;
 
-  public:
+public:
     /**
      * @brief Creates a new greeter
      * @param name the name to greet
@@ -26,6 +34,6 @@ namespace greeter {
      * @return a string containing the greeting
      */
     std::string greet(LanguageCode lang = LanguageCode::EN) const;
-  };
+};
 
-}  // namespace greeter
+} // namespace greeter

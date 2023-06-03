@@ -2,7 +2,6 @@
 #include <greeter/version.h>
 #include <gtest/gtest.h>
 
-
 #include <string>
 
 TEST(Greeter, Simple)
