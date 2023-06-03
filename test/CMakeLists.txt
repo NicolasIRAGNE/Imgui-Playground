@@ -46,7 +46,6 @@ if(NOT TEST_INSTALLED_VERSION)
     target_compile_options(Greeter PUBLIC -Wall -Wpedantic -Wextra -Werror)
   elseif(MSVC)
     target_compile_options(Greeter PUBLIC /W4 /WX)
-    target_compile_definitions(${PROJECT_NAME} PUBLIC DOCTEST_CONFIG_USE_STD_HEADERS)
   endif()
 endif()
 
