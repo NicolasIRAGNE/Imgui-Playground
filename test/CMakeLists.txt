@@ -53,6 +53,8 @@ endif()
 # ---- Add GreeterTests ----
 
 enable_testing()
+include(GoogleTest)
+gtest_discover_tests(${PROJECT_NAME})
 
 # ---- code coverage ----
 
