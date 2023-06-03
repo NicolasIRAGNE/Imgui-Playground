@@ -15,7 +15,14 @@ include(../cmake/tools.cmake)
 
 include(../cmake/CPM.cmake)
 
-CPMAddPackage("gh:doctest/doctest@2.4.9")
+CPMAddPackage(
+  NAME googletest
+  GITHUB_REPOSITORY google/googletest
+  GIT_TAG release-1.12.1
+  VERSION 1.12.1
+  OPTIONS "INSTALL_GTEST OFF" "gtest_force_shared_crt"
+)
+
 CPMAddPackage("gh:TheLartians/Format.cmake@1.7.3")
 
 if(TEST_INSTALLED_VERSION)
@@ -26,10 +33,15 @@ endif()
 
 # ---- Create binary ----
 
-file(GLOB sources CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp)
-add_executable(${PROJECT_NAME} ${sources})
-target_link_libraries(${PROJECT_NAME} doctest::doctest Greeter::Greeter)
-set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 17)
+add_executable(${PROJECT_NAME})
+
+target_sources(${PROJECT_NAME}
+  PRIVATE
+    source/greeter.cpp
+)
+
+target_link_libraries(${PROJECT_NAME} Greeter gtest gtest_main)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
 # enable compiler warnings
 if(NOT TEST_INSTALLED_VERSION)
@@ -44,13 +56,6 @@ endif()
 # ---- Add GreeterTests ----
 
 enable_testing()
-
-# Note: doctest and similar testing frameworks can automatically configure CMake tests. For other
-# testing frameworks add the tests target instead: add_test(NAME ${PROJECT_NAME} COMMAND
-# ${PROJECT_NAME})
-
-include(${doctest_SOURCE_DIR}/scripts/cmake/doctest.cmake)
-doctest_discover_tests(${PROJECT_NAME})
 
 # ---- code coverage ----
 
