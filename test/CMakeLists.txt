@@ -37,7 +37,7 @@ add_executable(${PROJECT_NAME})
 
 target_sources(${PROJECT_NAME} PRIVATE source/greeter.cpp)
 
-target_link_libraries(${PROJECT_NAME} Greeter gtest gtest_main)
+target_link_libraries(${PROJECT_NAME} Greeter::Greeter gtest gtest_main)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
 # enable compiler warnings
