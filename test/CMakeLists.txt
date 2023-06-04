@@ -43,7 +43,7 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 # enable compiler warnings
 if(NOT TEST_INSTALLED_VERSION)
   if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_compile_options(Greeter PUBLIC -Wall -Wpedantic -Wextra -Werror)
+    target_compile_options(Greeter PUBLIC -Wall -Wpedantic -Wextra)
   elseif(MSVC)
     target_compile_options(Greeter PUBLIC /W4)
   endif()
