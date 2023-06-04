@@ -33,34 +33,6 @@ CPMAddPackage(
   OPTIONS "FMT_INSTALL YES" # create an installable target
 )
 
-CPMAddPackage("gh:ocornut/imgui@1.89.6")
-
-# Manually create imgui target because it is not a CMake project
-add_library(imgui STATIC
-    $<BUILD_INTERFACE:${imgui_SOURCE_DIR}/>imgui.cpp
-    $<BUILD_INTERFACE:${imgui_SOURCE_DIR}/>imgui_draw.cpp
-    $<BUILD_INTERFACE:${imgui_SOURCE_DIR}/>imgui_widgets.cpp
-    $<BUILD_INTERFACE:${imgui_SOURCE_DIR}/>imgui_tables.cpp
-)
-
-include(GNUInstallDirs)
-
-install(TARGETS imgui EXPORT imguiTargets
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
-
-install(EXPORT imguiTargets
-  FILE imguiTargets.cmake
-  NAMESPACE imgui::
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/imgui
-)
-
-target_include_directories(imgui INTERFACE $<BUILD_INTERFACE:${imgui_SOURCE_DIR}/>)
-target_compile_definitions(imgui PUBLIC -DIMGUI_DISABLE_OBSOLETE_FUNCTIONS) # optional imgui setting
-
 # ---- Add source files ----
 
 # Note: globbing sources is considered bad practice as CMake's generators may not detect new files
@@ -75,7 +47,10 @@ target_compile_definitions(imgui PUBLIC -DIMGUI_DISABLE_OBSOLETE_FUNCTIONS) # op
 # target: add_library(${PROJECT_NAME} INTERFACE)
 add_library(${PROJECT_NAME})
 target_sources(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/greeter/greeter.h)
+target_sources(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/greeter/fs.h)
 target_sources(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/source/greeter.cpp)
+target_sources(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/source/fs.cpp)
+
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 20)
 
 # being a cross-platform target, we enforce standards conformance on MSVC
@@ -83,7 +58,6 @@ target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>
 
 # Link dependencies
 target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
-target_link_libraries(${PROJECT_NAME} PRIVATE imgui)
 
 target_include_directories(
   ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
@@ -106,5 +80,5 @@ packageProject(
   INCLUDE_DESTINATION include/${PROJECT_NAME}-${PROJECT_VERSION}
   VERSION_HEADER "${VERSION_HEADER_LOCATION}"
   COMPATIBILITY SameMajorVersion
-  DEPENDENCIES "fmt 9.1.0;imgui 1.89.6"
+  DEPENDENCIES "fmt 9.1.0"
 )
